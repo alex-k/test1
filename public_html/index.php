@@ -2,6 +2,8 @@
 
 ini_set('display_errors','on');
 
+define('APP_ROOT', dirname(__DIR__));
+
 spl_autoload_register('Autoload');
 
 $req=new Request();
@@ -39,23 +41,26 @@ function Autoload($classname)
 {       
 
     $fname=$classname.'.php';
-    $dir=dirname(__DIR__).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
+    $dir=APP_ROOT.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
 
 
 
+    $suffix='';
     if (preg_match('/[a-zA-Z0-9]+Controller$/', $classname)) {
-        $dir.='controllers'.DIRECTORY_SEPARATOR;
+        $suffix='controllers'.DIRECTORY_SEPARATOR;
     } elseif (preg_match('/[a-zA-Z0-9]+Model$/', $classname)) {
-        $dir.='models'.DIRECTORY_SEPARATOR;
+        $suffix='models'.DIRECTORY_SEPARATOR;
     } elseif (preg_match('/[a-zA-Z0-9]+View$/', $classname)) {
-        $dir.='views'.DIRECTORY_SEPARATOR;
+        $suffix='views'.DIRECTORY_SEPARATOR;
     } elseif (preg_match('/[a-zA-Z0-9]+Helper$/', $classname)) {
-        $dir.='helpers'.DIRECTORY_SEPARATOR;
+        $suffix='helpers'.DIRECTORY_SEPARATOR;
     } elseif (preg_match('/[a-zA-Z0-9]+Service$/', $classname)) {
-        $dir.='services'.DIRECTORY_SEPARATOR;
+        $suffix='services'.DIRECTORY_SEPARATOR;
+    } elseif (preg_match('/[a-zA-Z0-9]+Repository$/', $classname)) {
+        $suffix='repositories'.DIRECTORY_SEPARATOR;
     } elseif (preg_match('/[a-zA-Z0-9]+Exception$/', $classname)) {
-        $dir.='exceptions'.DIRECTORY_SEPARATOR;
+        $suffix='exceptions'.DIRECTORY_SEPARATOR;
     }   
-    return include($dir.$fname);
+    return include($dir.$suffix.$fname);
 }       
 
