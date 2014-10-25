@@ -1,0 +1,21 @@
+<?php
+include "header.html";
+?>
+<h3>Comments for page <?= $this->view->getData('page')->getUrl() ?></h3>
+<ul>
+<?php
+    foreach ($this->view->getData('comments') as $c) {
+     printf('
+                <p>
+                <strong>Name:</strong> %s<br/>
+                <strong>Email:</strong> %s<br/>
+                <strong>Text:</strong> %s<br/>
+                </p>
+             ',$c->getName(),$c->getEmail(),$c->getText());   
+                
+    }
+?>
+</ul>
+<?php
+include "footer.html";
+?>

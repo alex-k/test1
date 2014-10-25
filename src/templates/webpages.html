@@ -1,0 +1,15 @@
+<?php
+include "header.html";
+?>
+<h3>List</h3>
+<ul>
+<?php
+    foreach ($this->view->getData('items') as $page) {
+     printf('<li><a href="/comments/list?url=%s">%s</a></li>',$page['url'],$page['url']);
+
+    }
+?>
+</ul>
+<?php
+include "footer.html";
+?>

@@ -1,0 +1,15 @@
+<?php
+include "header.html";
+?>
+<h3>List</h3>
+<p>
+<?php
+    foreach ($this->view->getData('items') as $item) {
+        echo "<pre>".trim($item)."</pre>";
+    }
+?>
+</p>
+
+<?php
+include "footer.html";
+?>
