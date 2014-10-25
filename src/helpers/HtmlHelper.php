@@ -3,7 +3,7 @@
 class HtmlHelper extends Helper {
     protected function body() {
         $tplname=$this->view->getViewName().'.html';
-        include dirname(__DIR__).DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$tplname;
+        include APP_ROOT.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$tplname;
     }
 
 }

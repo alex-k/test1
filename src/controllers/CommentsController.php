@@ -4,8 +4,9 @@ class CommentsController extends Controller {
     public function getAction() {
         $view=new CommentslistView;
         $pageservice=new WebpageService;
-
-        $page=$pageservice->getPageByUrl($this->request->getData('url'));
+    
+        $url=$this->request->getData('url');
+        $page=$pageservice->getPageByUrl($url);
         if (!$page) {
             $page=new WebpageModel;
             $page->setUrl($url);
