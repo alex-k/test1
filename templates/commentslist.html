@@ -1,0 +1,29 @@
+<?php
+include "header.html";
+?>
+<h3>Comments for page <?= $this->view->getData('page')->getUrl() ?></h3>
+<ul>
+<?php
+    function print_comment($c) {
+         printf('
+                    <p>
+                    <strong>Name:</strong> %s<br/>
+                    <strong>Email:</strong> %s<br/>
+                    <strong>Text:</strong> %s<br/>
+                     <div id="replies" style="margin-left:20px;">   
+                 ',$c->getName(),$c->getEmail(),$c->getText());   
+         foreach($c->getReplies() as $r) {
+             print_comment($r);
+         }
+          printf(' </div></p>');
+    }
+
+
+    foreach ($this->view->getData('comments') as $c) {
+             print_comment($c);
+    }
+?>
+</ul>
+<?php
+include "footer.html";
+?>
