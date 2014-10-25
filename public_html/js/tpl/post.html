@@ -1,0 +1,12 @@
+<div id="comment_id">
+    <div> <strong>#<span id="id"></span></strong> from <span id="name"></span> (<span id="email"></span>)</strong> at <span id="date"></span> </div>
+    <p id="text"> </p>
+    <a href="#" onClick="Comments.add(this.parentNode.querySelector('#replyForm'),
+                         this.parentNode.querySelector('#replies'),
+                         {parent_id:this.parentNode.querySelector('#id').innerHTML});
+                        return false;"
+                        >reply</a>
+    <div id="replyForm"></div>
+
+    <div id="replies" style="margin-left:50px;"></div>
+</div>
