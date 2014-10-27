@@ -8,10 +8,12 @@ var Comments = Comments || (function() {
                     data : "http://test1.phpbee.org",
                     data_list : "/comments/list.json?url=",
                     data_post : "/comments/post.json?url=",
-                    tpl: "js/tpl",
+                    data_put  : "/comments/post.json?url=",
+                    tpl: "http://test1.phpbee.org/js/tpl",
                     tpl_list : "/list.html",
-                    tpl_post : "/post.html",
+                    tpl_comment : "/comment.html",
                     tpl_form : "/form.html",
+                    tpl_form_verify : "/form_verify.html",
                     target: document.getElementById("Comments")
                 };
     var init = function(args) {
@@ -24,17 +26,54 @@ var Comments = Comments || (function() {
 
         _tplurl = {
             list: _args.tpl+_args.tpl_list,
-            post: _args.tpl+_args.tpl_post,
-            form: _args.tpl+_args.tpl_form
+            comment: _args.tpl+_args.tpl_comment,
+            form: _args.tpl+_args.tpl_form,
+            form_verify: _args.tpl+_args.tpl_form_verify
         }
         _tpl = {}
 
         _url= {
             list : _args.data+_args.data_list+_args.page_id,
-            post : _args.data+_args.data_post+_args.page_id
+            post : _args.data+_args.data_post+_args.page_id,
+            put: _args.data+_args.data_put+_args.page_id
         }
 
     };
+    var get_form_vars = function(form) {
+            var post = {};
+            for (k in form.elements) {
+                var e = form.elements[k];
+                post[e.name]=e.value;
+            }
+            return post;
+    };
+    var set_form_vars = function(target,data) {
+                    for (k in data) {
+                        //var inp=document.getElementsByName(k);
+                        var inp=target.querySelectorAll('input[name="'+k+'"]');
+                        for (i in inp) { inp[i].value=data[k]; }
+                    }
+    };
+
+    var set_form_errors = function(form,data) {
+                form.querySelector("#error").innerHTML=data.message;
+                var spans=form.querySelectorAll(".fielderror") ;
+                for(i in spans) {
+                    spans[i].innerHTML="";
+                }
+                for (field in data.error) {
+                    form.querySelector("#error_"+field).innerHTML="";
+                    for (j in data.errors[field]) {
+                        form.querySelector("#error_"+field).innerHTML+=data.errors[field][j]+" ";
+                    }
+                }
+    };
+
+
+    var make_url_links = function(text) {
+            var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i;
+            return text.replace(exp,"<a href='$1'>$1</a>"); 
+    }
 
     var draw_form = function(tpl,data) {
             var doc= document.implementation.createHTMLDocument();
@@ -48,23 +87,22 @@ var Comments = Comments || (function() {
             doc.body.innerHTML = tpl;
             doc.getElementById("pageid").innerHTML=data.page.url;
             for (var id in data.comments) {
-                var post_html=draw_post(_tpl['post'],data.comments[id]);
-                doc.getElementById("commentsList").innerHTML+=post_html;
+                doc.getElementById("commentsList").innerHTML+=draw_comment(_tpl['comment'],data.comments[id]);
             }
             return doc.body.innerHTML;
 
     }
-    var draw_post = function(tpl,c) {
+    var draw_comment = function(tpl,c) {
             var doc= document.implementation.createHTMLDocument();
             doc.body.innerHTML = tpl;
             doc.getElementById("id").innerHTML=c.id;
             doc.getElementById("name").innerHTML=c.name;
             doc.getElementById("email").innerHTML=c.email;
-            doc.getElementById("text").innerHTML=c.text;
+            doc.getElementById("text").innerHTML=make_url_links(c.text);
             doc.getElementById("date").innerHTML=c.date;
             for (var id in c.replies) {
                 var r=c.replies[id];
-                doc.getElementById("replies").innerHTML+=draw_post(tpl,r);
+                doc.getElementById("replies").innerHTML+=draw_comment(tpl,r);
             }
             return doc.body.innerHTML;
     }
@@ -98,21 +136,20 @@ var Comments = Comments || (function() {
 
                 add : function(target,container,data) {
                     target.innerHTML=draw_form(_tpl['form'],data);
+                    set_form_vars(target,data);
+                    /*
                     for (k in data) {
                         var inp=document.getElementsByName(k);
                         for (i in inp) { inp[i].value=data[k]; }
                     }
+                    */
 
                     target.querySelector("#submitComment").onclick=function(){ Comments.post(this.parentNode,target,container);};
 
                 },
 
                 post : function (form,target,container) {
-                    var post = {};
-                    for (k in form.elements) {
-                        var e = form.elements[k];
-                        post[e.name]=e.value;
-                    }
+                    var post = get_form_vars(form);
                     var req = (window.XMLHttpRequest)?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");
                     req.responseType = 'json';
                     req.open("POST",_url.post,true);
@@ -124,21 +161,15 @@ var Comments = Comments || (function() {
                         if (req.status == 200) {
                             log(data);
                             target.innerHTML="";
-                            var post_html=draw_post(_tpl['post'],data.comment);
-                            container.innerHTML+=post_html;
+                            var comment_html=draw_comment(_tpl['comment'],data.comment);
+                            container.innerHTML+=comment_html;
+                    
+                            target.innerHTML=draw_form(_tpl['form_verify'],data.comment);
+                            set_form_vars(target,data.comment_html);
 
                         } else {
-                            form.querySelector("#error").innerHTML=data.message;
-                            var spans=form.querySelectorAll(".fielderror") ;
-                            for(i in spans) {
-                                spans[i].innerHTML="";
-                            }
-                            for (field in data.errors) {
-                                form.querySelector("#error_"+field).innerHTML="";
-                                for (j in data.errors[field]) {
-                                    form.querySelector("#error_"+field).innerHTML+=data.errors[field][j]+" ";
-                                }
-                            }
+                            set_form_errors(form,data);
+
                         }
                     }
                     req.send(JSON.stringify(post));

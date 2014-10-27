@@ -1,17 +1,18 @@
 <?php
 include "header.html";
 ?>
-<h3>Comments for page <?= $this->view->getData('page')->getUrl() ?></h3>
+<h3>Comments for page <a href="<?= $this->view->getData('page')->getUrl() ?>"><?= $this->view->getData('page')->getUrl() ?></a></h3>
 <ul>
 <?php
     function print_comment($c) {
+         $txt=preg_replace('/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i','<a href="$1">$1</a>',$c->getText());
          printf('
                     <p>
                     <strong>Name:</strong> %s<br/>
                     <strong>Email:</strong> %s<br/>
                     <strong>Text:</strong> %s<br/>
                      <div id="replies" style="margin-left:20px;">   
-                 ',$c->getName(),$c->getEmail(),$c->getText());   
+                 ',$c->getName(),$c->getEmail(),$txt);   
          foreach($c->getReplies() as $r) {
              print_comment($r);
          }
