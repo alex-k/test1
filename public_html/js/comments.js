@@ -152,17 +152,37 @@ var Comments = Comments || (function() {
                         var data = req.response;
 
                         if (req.status == 201) {
-                            log(data);
                             target.innerHTML="";
                             var comment_html=draw_comment(_tpl['comment'],data.comment);
                             container.innerHTML+=comment_html;
                     
                             target.innerHTML=draw_form(_tpl['form_verify'],data.comment);
                             set_form_vars(target,data.comment_html);
+                            target.querySelector('#submit').onclick=function(){ Comments.put(this.parentNode,target,container);};
 
                         } else {
                             set_form_errors(form,data);
 
+                        }
+                    }
+                    req.send(JSON.stringify(post));
+
+                },
+
+                put : function (form,target,container) {
+                    var post = get_form_vars(form);
+                    var req = (window.XMLHttpRequest)?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");
+                    req.responseType = 'json';
+                    req.open("PUT",_url.put,true);
+                    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    req.onload=function() {
+                        log(req);
+                        var data = req.response;
+
+                        if (req.status == 200) {
+                            target.innerHTML="";
+                        } else {
+                            set_form_errors(form,data);
                         }
                     }
                     req.send(JSON.stringify(post));
