@@ -26,6 +26,9 @@ abstract class Helper {
             case RESPONSE_NOTACCEPTABLE:
                 header("HTTP/1.0 406 Not Acceptable");
                 break;
+            case RESPONSE_SERVERERROR:
+                header("HTTP/1.0 500 Server Error");
+                break;
             case RESPONSE_NOTIMPLEMENTED:
                 header("HTTP/1.0 501 Not Implemented");
                 break;

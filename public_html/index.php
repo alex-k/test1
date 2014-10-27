@@ -1,10 +1,8 @@
 <?php
 
-ini_set('display_errors','on');
-
 define('APP_ROOT', dirname(__DIR__));
+require(APP_ROOT.DIRECTORY_SEPARATOR.'config.php');
 
-spl_autoload_register('Autoload');
 
 $req=new Request();
 
@@ -22,6 +20,9 @@ try {
 } catch (RepositoryTableNotExistsException $e) {
     $controller = new InstallController($req);
     $result = $controller->installAction();
+} catch (Exception $e) {
+    $controller = new ErrorController($req);
+    $result = $controller->exceptionAction($e);
 }
 
 
@@ -37,30 +38,4 @@ $helper=new $helper_name($result,$req);
 $helper->display();
 
 
-function Autoload($classname)
-{       
-
-    $fname=$classname.'.php';
-    $dir=APP_ROOT.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
-
-
-
-    $suffix='';
-    if (preg_match('/[a-zA-Z0-9]+Controller$/', $classname)) {
-        $suffix='controllers'.DIRECTORY_SEPARATOR;
-    } elseif (preg_match('/[a-zA-Z0-9]+Model$/', $classname)) {
-        $suffix='models'.DIRECTORY_SEPARATOR;
-    } elseif (preg_match('/[a-zA-Z0-9]+View$/', $classname)) {
-        $suffix='views'.DIRECTORY_SEPARATOR;
-    } elseif (preg_match('/[a-zA-Z0-9]+Helper$/', $classname)) {
-        $suffix='helpers'.DIRECTORY_SEPARATOR;
-    } elseif (preg_match('/[a-zA-Z0-9]+Service$/', $classname)) {
-        $suffix='services'.DIRECTORY_SEPARATOR;
-    } elseif (preg_match('/[a-zA-Z0-9]+Repository$/', $classname)) {
-        $suffix='repositories'.DIRECTORY_SEPARATOR;
-    } elseif (preg_match('/[a-zA-Z0-9]+Exception$/', $classname)) {
-        $suffix='exceptions'.DIRECTORY_SEPARATOR;
-    }   
-    return include($dir.$suffix.$fname);
-}       
 
