@@ -158,7 +158,7 @@ var Comments = Comments || (function() {
                         log(req);
                         var data = req.response;
 
-                        if (req.status == 200) {
+                        if (req.status == 201) {
                             log(data);
                             target.innerHTML="";
                             var comment_html=draw_comment(_tpl['comment'],data.comment);
