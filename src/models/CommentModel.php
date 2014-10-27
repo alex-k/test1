@@ -8,6 +8,7 @@ class CommentModel extends Model {
                                             email varchar(255) DEFAULT NULL,
                                             `text` TEXT DEFAULT NULL,
                                             `date` INT DEFAULT 0,
+                                            `verified` INT NOT NULL DEFAULT 0,
                                             page_id INT NOT NULL, 
                                             parent_id INT DEFAULT 0
                                             )
@@ -16,26 +17,17 @@ class CommentModel extends Model {
     public function __construct() {
         parent::__construct();
 
-        $name=new ModelField('name');
-        $this->addField($name);
-        $email=new ModelField('email');
-        $this->addField($email);
-        $text=new ModelField('text');
-        $this->addField($text);
-        $date=new ModelDateField('date');
-        $this->addField($date);
+        $this->addField(new ModelField('name'));
+        $this->addField(new ModelField('email'));
+        $this->addField(new ModelField('text'));
+        $this->addField(new ModelIntField('verified'));
+        $this->addField(new ModelDateField('date'));
 
-        $parent_id=new ModelField('parent_id');
-        $parent_id->setType(FIELDTYPE_INT);
-        $this->addField($parent_id);
 
-        $page_id=new ModelField('page_id');
-        $page_id->setType(FIELDTYPE_INT);
-        $this->addField($page_id);
+        $this->addField(new ModelIntField('parent_id'));
+        $this->addField(new ModelIntField('page_id'));
+        $this->addField(new ModelSetField('replies'));
 
-        $replies=new ModelField('replies');
-        $replies->setType(FIELDTYPE_ARRAY);
-        $this->addField($replies);
     }
 
 

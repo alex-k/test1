@@ -173,6 +173,20 @@ class ModelDateField extends ModelField {
 
 }
 
+class ModelIntField extends ModelField {
+    function __construct($name) {
+        parent::__construct($name);
+        $this->setType(FIELDTYPE_INT);
+    }
+}
+
+class ModelSetField extends ModelField {
+    function __construct($name) {
+        parent::__construct($name);
+        $this->setType(FIELDTYPE_ARRAY);
+    }
+}
+
 
 class ModelFieldError {
 }
