@@ -137,13 +137,6 @@ var Comments = Comments || (function() {
                 add : function(target,container,data) {
                     target.innerHTML=draw_form(_tpl['form'],data);
                     set_form_vars(target,data);
-                    /*
-                    for (k in data) {
-                        var inp=document.getElementsByName(k);
-                        for (i in inp) { inp[i].value=data[k]; }
-                    }
-                    */
-
                     target.querySelector("#submitComment").onclick=function(){ Comments.post(this.parentNode,target,container);};
 
                 },
