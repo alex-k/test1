@@ -52,6 +52,7 @@ class CommentsController extends Controller {
             return $view;
         }
         $view=new CommentView;
+        $view->setCode(RESPONSE_CREATED);
         $view->setData('comment',$comment);
 
         return $view;

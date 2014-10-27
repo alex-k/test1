@@ -11,6 +11,12 @@ abstract class Helper {
     }
     protected function headers() {
         switch ($this->view->getCode()) {
+            case RESPONSE_OK:
+                header("HTTP/1.0 200 OK");
+                break;
+            case RESPONSE_CREATED:
+                header("HTTP/1.0 201 Created");
+                break;
             case RESPONSE_BADREQUEST:
                 header("HTTP/1.0 400 Bad Request");
                 break;
