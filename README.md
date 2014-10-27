@@ -1,4 +1,4 @@
-This is a solution for the "comments system" task implemented by Alexei Kochetov.
+This comment system provide beckend with REST api which allow users to post comment on a web page. Frontend is implemented on the javascript and uses XMLHttpRequest to communicate with backend. Users can add and answer comments anonymously. New comments are marked as unchecked unless user fill anti-spam form. I think that it's a good idea to allow user make an action as easy as possible avoiding them from terrible pre-checks. Please find sources attached in the zip file. You may find some links and howto below. 
 
 
 to add comment script on your page please add this code into it
@@ -35,30 +35,9 @@ you may pass extra options on your need
         Comments.comments();
     </script>
 
-To run this script under Apache web server please be ensured you have .htaccess files enabled and rewrite module installed.
-If you run nginx web server you may use config provided below.
+Backend Installation
 
-    server {
-        listen   80;
-        server_name test1.phpbee.org;
+You will need PHP 5 and MySQL to run backend on your server. Connection strings and passwords are stored into config.php file. You have to create database and access, all needed data tables will be created by the script automatically.
 
-
-        location / {
-            root   /home/www/test1.phpbee.org/public_html;
-            index  index.php;
-            if (!-e $request_filename) {
-                rewrite  ^(.*)$  /index.php last;
-            }
-        }
-
-        location ~ \.php$ {
-            root   /home/www/test1.phpbee.org/public_html;
-            if (!-f $request_filename) {
-                rewrite  ^(.*)/(.+?)$  $1/ redirect;
-            }
-            fastcgi_pass   unix:/var/run/php5-fpm.sock;
-            fastcgi_index  index.php;
-            fastcgi_param  SCRIPT_FILENAME  /home/www/test1.phpbee.org/public_html$fastcgi_script_name;
-            include fastcgi_params;
-        }
-    }
+To run this script under Apache web server please be ensured you have rewrite module installed, .htaccess files enabled or manually add public_html/apache.conf to your apache.
+If you run nginx web server you may use public_html/nginx.conf.
