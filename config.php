@@ -1,6 +1,6 @@
 <?php
 
-define('MYSQL_DSN','mysql:host=localhost;dbname=test1');
+define('MYSQL_DSN','mysql:host=127.0.0.1;port=3306;dbname=test1');
 define('MYSQL_USER','test1');
 define('MYSQL_PASSWORD','');
 

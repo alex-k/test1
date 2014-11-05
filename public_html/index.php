@@ -14,7 +14,6 @@ $action_name = $req->getMethodName(). 'Action';
 if (!method_exists($controller,$action_name)) $action_name='notfoundAction';
 
 
-
 try {
     $result = $controller->$action_name();
 } catch (RepositoryTableNotExistsException $e) {

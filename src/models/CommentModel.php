@@ -43,22 +43,22 @@ class CommentModel extends Model {
     }
 
 
-    public function getName($v) { return $this->getValue('name'); }
+    public function getName() { return $this->getValue('name'); }
     public function setName($v) { $this->setValue('name',$v); }
 
-    public function getEmail($v) { return $this->getValue('email'); }
+    public function getEmail() { return $this->getValue('email'); }
     public function setEmail($v) { $this->setValue('email',$v); }
 
-    public function getDate($v) { return $this->getValue('date'); }
+    public function getDate() { return $this->getValue('date'); }
     public function setDate($v) { $this->setValue('date',$v); }
 
-    public function getText($v) { return $this->getValue('text'); }
+    public function getText() { return $this->getValue('text'); }
     public function setText($v) { $this->setValue('text',$v); }
 
-    public function getPageID($v) { return $this->getValue('page_id'); }
+    public function getPageID() { return $this->getValue('page_id'); }
     public function setPageID($v) { $this->setValue('page_id',$v); }
     public function setPage(WebpageModel $p) { $this->setPageID($p->getID()); }
 
-    public function getReplies($v) { return $this->getValue('replies'); }
+    public function getReplies() { return $this->getValue('replies'); }
     public function setReplies($v) { $this->setValue('replies',$v); }
 }

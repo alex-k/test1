@@ -9,7 +9,6 @@ class CommentService extends Service {
     public function install() {
         $item=new CommentModel;
         $que=$item->getStorageCreateStatement();
-        var_dump($que);
         $this->repository->prepare($que)->execute();
     }
     

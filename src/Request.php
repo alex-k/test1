@@ -38,15 +38,16 @@ class Request {
         $this->path=explode('/', $path);
 
         $this->parseData();
-
+        
         if (strpos($_SERVER['HTTP_ACCEPT'],'text/html')!==FALSE) $this->output_format=FORMAT_HTML;
 
         if (strtolower($ext)=='htm') $this->output_format=FORMAT_HTML;
         if (strtolower($ext)=='html') $this->output_format=FORMAT_HTML;
         if (strtolower($ext)=='json') $this->output_format=FORMAT_JSON;
 
-        if (strpos($_SERVER['HTTP_ACCEPT'],'text/json')!==FALSE) $this->output_format=FORMAT_JSON;
-        if (strpos($_SERVER['HTTP_ACCEPT'],'application/json')!==FALSE) $this->output_format=FORMAT_JSON;
+        if (stripos($_SERVER['HTTP_ACCEPT'],'text/json')!==FALSE) $this->output_format=FORMAT_JSON;
+        if (stripos($_SERVER['HTTP_ACCEPT'],'application/json')!==FALSE) $this->output_format=FORMAT_JSON;
+        if (stripos($_SERVER['HTTP_CONTENT_TYPE'],'application/json')!==FALSE) $this->output_format=FORMAT_JSON;
 
 
     }   

@@ -9,7 +9,6 @@ class WebpageService extends Service {
     public function install() {
         $item=new WebpageModel;
         $que=$item->getStorageCreateStatement();
-        var_dump($que);
         $this->repository->prepare($que)->execute();
     }
 
